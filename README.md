@@ -12,7 +12,7 @@ Built for OpenAI Hackathon 🚀
 
 ## Setup
 ```bash
-git clone https://github.com/<your-username>/hackathon-data-filter.git
+git clone https://github.com/<AnkitShukla-arch>/hackathon-data-filter.git
 cd hackathon-data-filter
 pip install -r requirements.txt
 python filter.py --input ./data/input.csv --output ./data/curated/ --config config.yaml
