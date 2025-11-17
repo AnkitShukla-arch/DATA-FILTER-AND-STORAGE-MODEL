@@ -6,7 +6,7 @@ import pandas as pd
 # FIX: Add project root to Python path
 # --------------------------------------
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(https://github.com/AnkitShukla-arch/DATA-FILTER-AND-STORAGE-MODEL/blob/main/my_utils.py)
+sys.path.append(my_utils.py)
 
 # Import from utils.py (same directory)
 from utils import safe_makedirs
