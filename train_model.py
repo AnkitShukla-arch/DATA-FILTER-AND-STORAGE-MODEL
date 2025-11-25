@@ -1,41 +1,37 @@
 import os
 import pandas as pd
-from utils import safe_makedirs  # or from my_utils import safe_makedirs if renamed
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+import joblib
 
-# Define directories
-OUTPUT_DIR = "outputs"
-VIZ_DIR = os.path.join(OUTPUT_DIR, "visualizations")
+MODEL_DIR = "models"
+MODEL_PATH = os.path.join(MODEL_DIR, "random_forest.pkl")
+DATA_PATHS = [
+    "data/filtered_data.csv",            # output from your filter or pipeline
+    "data/incoming/mydata.csv",          # fallback
+]
+TARGET = "target"  # adjust if your label column is named differently
 
-# Ensure directories exist
-safe_makedirs(OUTPUT_DIR)
-safe_makedirs(VIZ_DIR)
+def get_train_data():
+    """Looks for a valid input CSV and returns (X, y) for modeling."""
+    for path in DATA_PATHS:
+        if os.path.exists(path):
+            df = pd.read_csv(path)
+            if TARGET not in df.columns:
+                # Fallback: add synthetic target for demonstration
+                df[TARGET] = np.random.randint(0, 2, len(df))
+            X = df.drop(columns=[TARGET])
+            y = df[TARGET]
+            return X, y
+    raise FileNotFoundError(f"No source CSV found in {DATA_PATHS}")
 
-def train_model():
-    """
-    Dummy training function for demonstration.
-    Replace with your actual model training logic.
-    """
-    print("🚀 Starting model training...")
-
-    # Example training logic (replace with your code)
-    data_file = "filtered_output/filtered_data.csv"
-    if not os.path.exists(data_file):
-        print(f"⚠️ File '{data_file}' not found.")
-        return
-
-    df = pd.read_csv(data_file)
-    print(f"📊 Loaded {len(df)} records for training.")
-
-    # Example: pretend we train and save model
-    model_path = os.path.join(OUTPUT_DIR, "model.pkl")
-    df.head(10).to_csv(model_path, index=False)  # mock save
-    print(f"✅ Model saved to {model_path}")
-
-    # Example: create visualization folder output
-    viz_file = os.path.join(VIZ_DIR, "training_summary.txt")
-    with open(viz_file, "w") as f:
-        f.write("Training completed successfully.\n")
-    print(f"📈 Visualization saved to {viz_file}")
+def main():
+    os.makedirs(MODEL_DIR, exist_ok=True)
+    X, y = get_train_data()
+    model = RandomForestClassifier(n_estimators=100, random_state=42)
+    model.fit(X, y)
+    joblib.dump(model, MODEL_PATH)
+    print(f"[INFO] Model trained and saved to {MODEL_PATH}")
 
 if __name__ == "__main__":
-    train_model()
+    main()
