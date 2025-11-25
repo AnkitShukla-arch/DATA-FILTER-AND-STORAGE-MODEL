@@ -11,8 +11,6 @@
 
 A modular, production-focused data filtering and storage engine designed to **ingest → clean → classify → store** heterogeneous datasets.
 
-Inspired by BEPB-style documentation: **precise, developer-first, architecture-oriented.**
-
 ---
 
 ## 🧩 Key Features
