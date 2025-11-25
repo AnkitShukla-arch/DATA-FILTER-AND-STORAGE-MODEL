@@ -125,12 +125,6 @@ data/suspicious_output.csv
 
 **Ankit Shukla**
 
----
 
-## 📄 License
 
-MIT
 
----
-
-> *This README is structured in "BEPB engineering manual style" — dense, concise, technical, and built for recruiters who prefer architecture over aesthetics.*
