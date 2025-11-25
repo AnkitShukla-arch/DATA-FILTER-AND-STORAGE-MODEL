@@ -1,8 +1,9 @@
 # ⚡ DATA FILTER & STORAGE MODEL
 
-### ***Blueprint Engine for Pre‑Processing (BEPB‑Style README)***
 
-> Minimal. Brutal. Technical. No animations. No fluff. Pure engineering.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Platane/snk/output/github-contribution-grid-snake-dark.svg" alt="GitHub Snake Animation" width="100%">
+</p>
 
 ---
 
