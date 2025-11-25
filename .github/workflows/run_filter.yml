@@ -32,4 +32,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: random-forest-model
-          path: random_forest.pkl
+          path: models/random_forest.pkl
