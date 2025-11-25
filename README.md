@@ -1,19 +1,136 @@
-# Hackathon Data Filter
+# ⚡ DATA FILTER & STORAGE MODEL
 
-This project filters, cleans, and prepares raw structured data for storage in star/snowflake schemas.  
-Built for OpenAI Hackathon 🚀
+### ***Blueprint Engine for Pre‑Processing (BEPB‑Style README)***
 
-## Features
-- Handles large CSVs (up to ~5GB) with chunked processing
-- Cleans data (nulls, types, duplicates)
-- Detects anomalies using IsolationForest
-- Stores output in Parquet format for downstream warehouses
-- Configurable rules via `config.yaml`
+> Minimal. Brutal. Technical. No animations. No fluff. Pure engineering.
 
-## Setup
-```bash
-git clone https://github.com/<AnkitShukla-arch>/hackathon-data-filter.git
-cd hackathon-data-filter
+---
+
+## 📌 Overview
+
+A modular, production-focused data filtering and storage engine designed to **ingest → clean → classify → store** heterogeneous datasets.
+
+Inspired by BEPB-style documentation: **precise, developer-first, architecture-oriented.**
+
+---
+
+## 🧩 Key Features
+
+* **Unified Ingestion Layer** for CSV / JSON / Logs.
+* **Deterministic Cleaning Engine** with configurable missing-value policy.
+* **Threat-Class Filtering** (IP / fingerprint / anomaly extraction).
+* **Isolated Storage Layer** (clean vs suspicious datasets).
+* **Stateless, Reproducible, Modular** code structure.
+
+---
+
+## 🏗 Architecture
+
+```
+modules/
+│
+├── cleansing.py      # normalization, NaN policies, formatting
+├── filtering.py      # IP extraction, suspicious pattern isolation
+├── storage.py        # file output, directory handling
+└── utils.py          # helpers, constants
+
+main.py               # pipeline orchestrator
+```
+
+Pipeline:
+
+```
+Raw Input → Validation → Cleansing → Threat Filtering → Storage
+```
+
+---
+
+## 🔧 Configuration Philosophy
+
+Minimal interfaces. Explicit behavior. No silent assumptions.
+
+### Cleaning Policies
+
+```
+Categorical NaN → "Unknown"
+Numeric NaN      → "DummyValue"
+Whitespace Trim  → Enabled
+Case Normalization → Enabled
+```
+
+### Filtering Rules
+
+```
+IP Regex:        Enabled
+Fingerprint Scan: Enabled
+Suspicious Log Isolation: Enabled
+```
+
+---
+
+## 🚀 Usage
+
+### Install
+
+```
 pip install -r requirements.txt
-python filter.py --input ./data/input.csv --output ./data/curated/ --config config.yaml
+```
 
+### Run Pipeline
+
+```
+python main.py
+```
+
+### Outputs
+
+```
+data/cleaned_output.csv
+data/suspicious_output.csv
+```
+
+---
+
+## 🧪 Sample Flow (Reference)
+
+```
+[INPUT]   → raw_data.csv
+[CLEAN]   → normalized fields / NaN resolved
+[FILTER]  → 32 items flagged as suspicious
+[STORE]   → cleaned_output.csv / suspicious_output.csv
+```
+
+---
+
+## 🧠 Design Principles
+
+* **Determinism** → Same input = same output.
+* **Isolation** → Cleaning and filtering are orthogonal.
+* **Observability‑Ready** → Functions structured for logging integration.
+* **Replaceable Modules** → Swap any stage without redesign.
+
+---
+
+## 📦 Potential Extensions
+
+* FastAPI service layer
+* Kafka or Kinesis ingestion
+* ML-based anomaly detection
+* Integration with Airflow / Prefect
+* PostgreSQL / MinIO storage backend
+
+---
+
+## 👤 Author
+
+**Ankit Shukla**
+
+---
+
+## 📄 License
+
+MIT
+
+---
+
+> *This README is structured in "BEPB engineering manual style" — dense, concise, technical, and built for recruiters who prefer architecture over aesthetics.*
