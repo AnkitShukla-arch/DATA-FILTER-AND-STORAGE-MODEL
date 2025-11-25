@@ -28,7 +28,21 @@ def test_model_pickle_valid():
     assert os.path.exists(model_path), "random_forest.pkl missing"
     model = joblib.load(model_path)
     assert model is not None, "Failed to load trained model"
-
+    
+def test_model_pickle_valid():
+    model_path = "models/random_forest.pkl"
+    assert os.path.exists(model_path), "random_forest.pkl missing"
+    try:
+        model = joblib.load(model_path)
+    except Exception as e:
+        filesize = os.path.getsize(model_path)
+        with open(model_path, "rb") as f:
+            head = f.read(32)
+        raise AssertionError(
+            f"Failed to load trained model! "
+            f"Possibly corrupted or not a pickle. Size: {filesize} bytes, Head: {head}\nError: {e}"
+        )
+    assert model is not None, "Model loaded but is None"
 """def test_visualizations_exist():
     # 1️⃣ Ensure visualizations.py exists
     viz_file = "visualizations.py"
