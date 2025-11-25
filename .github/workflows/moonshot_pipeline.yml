@@ -2,11 +2,9 @@ name: Moonshot Pipeline
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   build-and-train:
@@ -14,10 +12,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
@@ -26,17 +24,45 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # Ensure all key directories exist to avoid errors in subsequent steps
+      - name: Ensure directories exist
+        run: |
+          mkdir -p models
+          mkdir -p data/incoming
+          mkdir -p data/filtered
+          mkdir -p data/visuals
+
+      # If you want a dummy CSV to guarantee training never fails,
+      # uncomment the next 6 lines. This is for dev/test; remove for prod.
+      # - name: Guarantee a dummy CSV for CI (optional, safe for tests)
+      #   run: |
+      #     if [ ! -f data/incoming/mydata.csv ]; then
+      #       echo -e "f1,f2,target\n0,2024-01-01,0\n1,2024-01-02,1" > data/incoming/mydata.csv
+      #     fi
+
       - name: Run data filter
         run: python filter.py
 
-      - name: Run training
+      - name: Train model
         run: python train_model.py
 
+      # Ensure the visuals output directory exists for consistency
+      - name: Ensure data/visuals folder exists
+        run: |
+          rm -f data/visuals || true
+          mkdir -p data/visuals
 
       - name: Run tests
         run: pytest --maxfail=1 --disable-warnings -q
-      - name: Ensure data/visuals folder exists
-        run: |
-         rm -f data/visuals || true
-         mkdir -p data/visuals
 
+      - name: Upload trained model artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: random-forest-model
+          path: models/random_forest.pkl
+
+      - name: Upload visualizations artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: visuals
+          path: data/visuals/
