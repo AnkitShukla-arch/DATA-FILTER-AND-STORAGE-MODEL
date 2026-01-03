@@ -24,28 +24,25 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Ensure all key directories exist to avoid errors in subsequent steps
       - name: Ensure directories exist
         run: |
           mkdir -p models
           mkdir -p data/incoming
           mkdir -p data/filtered
 
-      # If you want a dummy CSV to guarantee training never fails,
-      # uncomment the next 6 lines. This is for dev/test; remove for prod.
-      # - name: Guarantee a dummy CSV for CI (optional, safe for tests)
-      #   run: |
-      #     if [ ! -f data/incoming/mydata.csv ]; then
-      #       echo -e "f1,f2,target\n0,2024-01-01,0\n1,2024-01-02,1" > data/incoming/mydata.csv
-      #     fi
+      - name: Ensure the data.csv file exists
+        run: |
+          mkdir -p data
+          if [ ! -f data/data.csv ]; then
+            echo "id,value" > data/data.csv
+            echo "1,100" >> data/data.csv
+          fi
 
       - name: Run data filter
         run: python filter.py
 
       - name: Train model
         run: python train_model.py
-
-      # Ensure the visuals output directory exists for consistency
 
       - name: Run tests
         run: pytest --maxfail=1 --disable-warnings -q
@@ -55,5 +52,3 @@ jobs:
         with:
           name: random-forest-model
           path: models/random_forest.pkl
-
-      
