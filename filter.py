@@ -18,7 +18,7 @@ def main():
     output_dir = "filtered_output"
     safe_makedirs(output_dir)
 
-    input_file = "data.csv"
+    input_file = "data/data.csv"
     output_file = os.path.join(output_dir, "filtered_data.csv")
 
     if not os.path.exists(input_file):
