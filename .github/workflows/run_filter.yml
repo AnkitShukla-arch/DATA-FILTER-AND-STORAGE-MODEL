@@ -24,6 +24,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Ensure the data.csv file exists
+        run: |
+          mkdir -p data
+          if [ ! -f data/data.csv ]; then
+            echo "id,value" > data/data.csv
+            echo "1,100" >> data/data.csv
+          fi
+
       - name: Run filter script
         run: |
           python filter.py
